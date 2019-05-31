@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using Cognex.VisionPro;
@@ -93,7 +94,7 @@ namespace MainAPP
 
         public static void SaveVPP()
         {
-            CogSerializer.SaveObjectToFile(tbCheck, vppFilePath);
+            CogSerializer.SaveObjectToFile(tbCheck, vppFilePath, typeof(BinaryFormatter), CogSerializationOptionsConstants.Minimum);
         }
 
         public static void CloseVPP()
