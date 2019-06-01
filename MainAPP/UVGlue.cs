@@ -357,7 +357,14 @@ namespace MainAPP
             };
             var line = string.Join(",", lineVals);
 
-            csvFile = dataLogger.WriteLine(line);
+            try
+            {
+                csvFile = dataLogger.WriteLine(line);
+            }
+            catch
+            {
+                MessageBox.Show("请关闭所有CCD软件产生的文档");
+            }
 
             removeOutdatedFiles(logDir);
         }
