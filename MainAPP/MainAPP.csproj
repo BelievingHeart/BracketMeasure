@@ -113,6 +113,18 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\FormRectify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormRectify.Designer.cs">
+      <DependentUpon>FormRectify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\VerificationBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\VerificationBox.Designer.cs">
+      <DependentUpon>VerificationBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="UVGlue.cs" />
     <Compile Include="IOC0640.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -146,11 +158,11 @@
     <Compile Include="UI\FormMain.designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FormModel.cs">
+    <Compile Include="UI\FormBlock.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FormModel.Designer.cs">
-      <DependentUpon>FormModel.cs</DependentUpon>
+    <Compile Include="UI\FormBlock.Designer.cs">
+      <DependentUpon>FormBlock.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FormModelCalib.cs">
       <SubType>Form</SubType>
@@ -182,14 +194,20 @@
     <EmbeddedResource Include="UI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FormModel.resx">
-      <DependentUpon>FormModel.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FormBlock.resx">
+      <DependentUpon>FormBlock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormModelCalib.resx">
       <DependentUpon>FormModelCalib.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormRectify.resx">
+      <DependentUpon>FormRectify.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\FormStarting.resx">
       <DependentUpon>FormStarting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\VerificationBox.resx">
+      <DependentUpon>VerificationBox.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

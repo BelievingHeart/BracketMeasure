@@ -22,7 +22,7 @@ namespace MainAPP.UI
 {
     public partial class FormMain : Form
     {
-        FormModel frmModelUp;
+        FormBlock _formBlock;
 
 
         // fields for summery
@@ -41,6 +41,7 @@ namespace MainAPP.UI
         private List<string> sampleKeys = new List<string>() { "TimeAdded", "X1", "X2", "Y1", "Y2", "Angle", "Result", "Order", "Space", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel" };
         private List<string> standardKeys = new List<string>() { "X1", "X2", "Y1", "Y2", "Angle" };
         private int numLines = 8;
+        private FormRectify _formRectify = new FormRectify();
 
         public void ShowAndSaveMsg_Invoke(string msg)
         {
@@ -137,11 +138,24 @@ namespace MainAPP.UI
             };
             _chartFormMarshaller = new ChartFormMarshaller(this, _legends, _sigmas, _numSamples, _chartFormButtons, btnReset, _reversed);
 
+            _formRectify.FormClosing += (o, args) =>
+            {
+                if (args.CloseReason != CloseReason.UserClosing) return;
+                ((FormRectify) o).Hide();
+                args.Cancel = true;
+            };
         }
 
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (e.CloseReason != CloseReason.UserClosing)
+            {
+                UVGlue.JoinBackgroundThreads();
+                UVGlue.cleanUp();
+                return;
+            }
+
             var closeDecision = MessageBox.Show("是否退出", "正在退出", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (closeDecision == DialogResult.Yes)
             {
@@ -187,18 +201,18 @@ namespace MainAPP.UI
         }
         private void btnRun_Click(object sender, EventArgs e)
         {
-            //UVGlue.tbCheck.Run();
-            //this.cogRecordDisplay1.Record = UVGlue.tbCheck.CreateLastRunRecord().SubRecords["CogIPOneImageTool1.OutputImage"];
+            //UVGlue._block.Run();
+            //this.cogRecordDisplay1.Record = UVGlue._block.CreateLastRunRecord().SubRecords["CogIPOneImageTool1.OutputImage"];
             UVGlue.RunOnce();
         }
         private void 模板设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (frmModelUp == null || frmModelUp.IsDisposed)
+            if (_formBlock == null || _formBlock.IsDisposed)
             {
-                frmModelUp = new FormModel();
+                _formBlock = new FormBlock();
             }
-            frmModelUp.Hide();
-            frmModelUp.Show(this);
+            _formBlock.Hide();
+            _formBlock.Show(this);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -248,6 +262,7 @@ namespace MainAPP.UI
 
         private void 相机校正ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(String.IsNullOrEmpty(UVGlue.csvFile)) return;
             var sampleDataDict = Rectifier.parseCSV_reversed(UVGlue.csvFile, sampleKeys, numLines);
             var standardDataDict = Rectifier.parseCSV_reversed(standardFile, standardKeys, numLines);
 
@@ -264,14 +279,23 @@ namespace MainAPP.UI
 
 
             Dictionary<string, double> biases = Rectifier.calcAveragedDiff(standardDataDict, distsUnBiased);
+            Rectifier.FilterBiases(ref biases, "X1", "X2");
 
-            var weight_and_biases_file = Rectifier.serializeWeightAndBiases(multiplier, biases, AppDomain.CurrentDomain.BaseDirectory + "/weight_and_biases");
+            var dataSource = Rectifier.GenerateDataSource(multiplier, biases);
 
-            Process.Start(weight_and_biases_file);
+            _formRectify.dataGridView1.DataSource = dataSource;
+            _formRectify.dataGridView1.Show(); 
+            _formRectify.ShowDialog(this);
+//            var weight_and_biases_file = Rectifier.serializeWeightAndBiases(multiplier, biases, AppDomain.CurrentDomain.BaseDirectory + "/weight_and_biases");
+//
+//            Process.Start(weight_and_biases_file);
         }
+
+      
 
         private void 数据比对ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(UVGlue.csvFile)) return;
             var standardDataDict = Rectifier.parseCSV_reversed(standardFile, standardKeys, numLines);
             var sampleDataDict = Rectifier.parseCSV_reversed(UVGlue.csvFile, sampleKeys, numLines);
 

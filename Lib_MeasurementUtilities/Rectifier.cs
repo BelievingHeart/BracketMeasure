@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cognex.VisionPro.ToolBlock;
 
 namespace Lib_MeasurementUtilities
 {
@@ -134,6 +136,58 @@ namespace Lib_MeasurementUtilities
             }
 
             return outFile;
+        }
+
+        public static ObservableCollection<RectifiedParam> GenerateDataSource(double w,
+            Dictionary<string, double> biases)
+        {
+            ObservableCollection<RectifiedParam> ret = new ObservableCollection<RectifiedParam>()
+                {new RectifiedParam() {Name = "m", Value = w}};
+            foreach (var bias in biases)
+            {
+                ret.Add(new RectifiedParam() {Name = bias.Key, Value = bias.Value});
+            }
+
+            return ret;
+        }
+
+        public static void FilterBiases(ref Dictionary<string, double> biases, params string[] keysToBeFiltered)
+        {
+            Dictionary<string, double> ret = new Dictionary<string, double>();
+            foreach (var bias in biases)
+            {
+                bool matchAny = false;
+                foreach (var key in keysToBeFiltered)
+                {
+                    if (key == bias.Key)
+                    {
+                        matchAny = true;
+                    }
+                }
+
+                if (!matchAny)
+                {
+                    ret.Add(bias.Key, bias.Value);
+                }
+            }
+
+            biases = ret;
+        }
+
+        public static void EditBlockInputParams(ObservableCollection<RectifiedParam> dataSource, List<Tuple<string, string>> nameMapping_fromTo, ref CogToolBlock block)
+        {
+            Debug.Assert(dataSource.Count == nameMapping_fromTo.Count);
+
+            var dict = new Dictionary<string, double>();
+            foreach (var d in dataSource)
+            {
+                dict.Add(d.Name, d.Value);
+            }
+            
+            for (int i = 0; i < dataSource.Count; i++)
+            {
+                block.Inputs[nameMapping_fromTo[i].Item2].Value = dict[nameMapping_fromTo[i].Item1];
+            }
         }
     }
 }

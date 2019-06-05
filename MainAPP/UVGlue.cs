@@ -33,7 +33,7 @@ namespace MainAPP
 
         //视觉部分
         //public static CogToolGroup tgCheck;
-        public static CogToolBlock tbCheck;
+        public static CogToolBlock _block;
 
 
         public static string projectDir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + "/VPP";
@@ -89,17 +89,17 @@ namespace MainAPP
 
         public static void LoadVPP()
         {
-            tbCheck = (CogToolBlock) CogSerializer.LoadObjectFromFile(vppFilePath);
+            _block = (CogToolBlock) CogSerializer.LoadObjectFromFile(vppFilePath);
         }
 
         public static void SaveVPP()
         {
-            CogSerializer.SaveObjectToFile(tbCheck, vppFilePath, typeof(BinaryFormatter), CogSerializationOptionsConstants.Minimum);
+            CogSerializer.SaveObjectToFile(_block, vppFilePath, typeof(BinaryFormatter), CogSerializationOptionsConstants.Minimum);
         }
 
         public static void CloseVPP()
         {
-            Misc.CloseCognexCamera(tbCheck);
+            Misc.CloseCognexCamera(_block);
         }
 
    
@@ -159,47 +159,47 @@ namespace MainAPP
         public static void RunOnce()
         {
             _formMain.Invoke((MethodInvoker) (() => { _formMain.btnReset.Enabled = true; }));
-            for (int i = 0; i < tbCheck.Outputs.Count; i++)
+            for (int i = 0; i < _block.Outputs.Count; i++)
             {
-                tbCheck.Outputs[i].Value = 0.0;
+                _block.Outputs[i].Value = 0.0;
             }
 
-            tbCheck.Run();
+            _block.Run();
             _formMain.Invoke((MethodInvoker) (() =>
             {
                 _formMain.cogRecordDisplay1.Record =
-                    tbCheck.CreateLastRunRecord().SubRecords["CogIPOneImageTool1.OutputImage"];
+                    _block.CreateLastRunRecord().SubRecords["CogIPOneImageTool1.OutputImage"];
             }));
 
             string runResult;
-            if (CogToolResultConstants.Accept == tbCheck.RunStatus.Result)
+            if (CogToolResultConstants.Accept == _block.RunStatus.Result)
             {
                 runResult = resultOK;
             }
             else
             {
-                CogPMAlignTool pma = (CogPMAlignTool) tbCheck.Tools["判断有无料"];
+                CogPMAlignTool pma = (CogPMAlignTool) _block.Tools["主定位"];
                 runResult = pma.Results.Count == 0 ? resultNoProduct : resultNG;
             }
             HandleResult(runResult);
 
 
-            Y1 = (double) tbCheck.Outputs["Y1"].Value;
-            Y2 = (double) tbCheck.Outputs["Y2"].Value;
-            X1 = (double) tbCheck.Outputs["X1"].Value;
-            X2 = (double) tbCheck.Outputs["X2"].Value;
-            angle = (double) tbCheck.Outputs["Angle"].Value;
-            X1_pixel = (double) tbCheck.Outputs["X1_pixel"].Value;
-            X2_pixel = (double) tbCheck.Outputs["X2_pixel"].Value;
-            Y1_pixel = (double) tbCheck.Outputs["Y1_pixel"].Value;
-            Y2_pixel = (double) tbCheck.Outputs["Y2_pixel"].Value;
+            Y1 = (double) _block.Outputs["Y1"].Value;
+            Y2 = (double) _block.Outputs["Y2"].Value;
+            X1 = (double) _block.Outputs["X1"].Value;
+            X2 = (double) _block.Outputs["X2"].Value;
+            angle = (double) _block.Outputs["Angle"].Value;
+            X1_pixel = (double) _block.Outputs["X1_pixel"].Value;
+            X2_pixel = (double) _block.Outputs["X2_pixel"].Value;
+            Y1_pixel = (double) _block.Outputs["Y1_pixel"].Value;
+            Y2_pixel = (double) _block.Outputs["Y2_pixel"].Value;
 
             lock (_formMain._chartFormMarshaller.mu_currentIndex)
             {
                 SaveLog(_formMain._chartFormMarshaller.currentIndex, runResult);
                 _formMain.showCurrentIndex(_formMain._chartFormMarshaller.currentIndex);
                 _formMain._chartFormMarshaller.incrementItemCount();
-                noErrorInThisRound &= (tbCheck.RunStatus.Result != CogToolResultConstants.Error);
+                noErrorInThisRound &= (_block.RunStatus.Result != CogToolResultConstants.Error);
                 _formMain._chartFormMarshaller.collectData(X1, X2, Y1, Y2, angle);
                 if (_formMain._chartFormMarshaller.RoundEndReached())
                 {
