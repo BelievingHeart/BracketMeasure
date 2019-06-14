@@ -56,16 +56,21 @@ namespace MainAPP
             Y2,
             X1,
             X2,
+            CircleX,
+            CircleY,
             X1_pixel,
             X2_pixel,
             Y1_pixel,
             Y2_pixel,
-            angle;
+            CircleX_pixel,
+            CircleY_pixel,
+            angle,
+            angleUncalib;
 
         private static string logDir = AppDomain.CurrentDomain.BaseDirectory + "Log";
 
         private static List<string> logTitile = new List<string>
-            {"时间", "X1", "X2", "Y1", "Y2", "角度", "结果", "序号", " ", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel"};
+            {"时间", "X1", "X2", "Y1", "Y2","圆X", "圆Y", "角度", "结果", "序号", " ", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel", "CircleX_pixel", "CircleY_pixel", "AngleUncalib"};
 
         private static DataLogger dataLogger = new DataLogger(logTitile, logDir);
 
@@ -189,10 +194,17 @@ namespace MainAPP
             X1 = (double) _block.Outputs["X1"].Value;
             X2 = (double) _block.Outputs["X2"].Value;
             angle = (double) _block.Outputs["Angle"].Value;
+            angleUncalib = (double) _block.Outputs["AngleUncalib"].Value;
             X1_pixel = (double) _block.Outputs["X1_pixel"].Value;
             X2_pixel = (double) _block.Outputs["X2_pixel"].Value;
             Y1_pixel = (double) _block.Outputs["Y1_pixel"].Value;
             Y2_pixel = (double) _block.Outputs["Y2_pixel"].Value;
+            CircleX = (double) _block.Outputs["CircleX"].Value;
+            CircleY = (double) _block.Outputs["CircleY"].Value;
+            CircleX_pixel = (double) _block.Outputs["CircleX_pixel"].Value;
+            CircleY_pixel = (double) _block.Outputs["CircleY_pixel"].Value;
+            
+
 
             lock (_formMain._chartFormMarshaller.mu_currentIndex)
             {

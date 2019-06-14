@@ -38,8 +38,8 @@ namespace MainAPP.UI
 
         // fields for rectifier
         private string standardFile = AppDomain.CurrentDomain.BaseDirectory + "/data/OMM_DATA.csv";
-        private List<string> sampleKeys = new List<string>() { "TimeAdded", "X1", "X2", "Y1", "Y2", "Angle", "Result", "Order", "Space", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel" };
-        private List<string> standardKeys = new List<string>() { "X1", "X2", "Y1", "Y2", "Angle" };
+        private List<string> sampleKeys = new List<string>() { "TimeAdded", "X1", "X2", "Y1", "Y2", "CircleX", "CircleY", "Angle", "Result", "Order", "Space", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel", "CircleX_pixel", "CircleY_pixel", "AngleUncalib" };
+        private List<string> standardKeys = new List<string>() {"Index", "X1", "X2", "Y1", "Y2", "CircleX", "CircleY", "Angle" };
         private int numLines = 8;
         private FormRectify _formRectify = new FormRectify();
 
@@ -273,22 +273,19 @@ namespace MainAPP.UI
             Dictionary<string, List<double>> distsUnBiased = Rectifier.calDistsUnbiased(sampleDataDict, multiplier,
                 new Tuple<string, string>("X1_pixel", "X1"), new Tuple<string, string>("X2_pixel", "X2")
                 , new Tuple<string, string>("Y1_pixel", "Y1"), new Tuple<string, string>("Y2_pixel", "Y2")
+                , new Tuple<string, string>("CircleX_pixel", "CircleX"), new Tuple<string, string>("CircleY_pixel", "CircleY")
             );
 
-            distsUnBiased["Angle"] = sampleDataDict["Angle"];
+            distsUnBiased["Angle"] = sampleDataDict["AngleUncalib"];
 
 
             Dictionary<string, double> biases = Rectifier.calcAveragedDiff(standardDataDict, distsUnBiased);
-            Rectifier.FilterBiases(ref biases, "X1", "X2");
 
             var dataSource = Rectifier.GenerateDataSource(multiplier, biases);
 
             _formRectify.dataGridView1.DataSource = dataSource;
             _formRectify.dataGridView1.Show(); 
             _formRectify.ShowDialog(this);
-//            var weight_and_biases_file = Rectifier.serializeWeightAndBiases(multiplier, biases, AppDomain.CurrentDomain.BaseDirectory + "/weight_and_biases");
-//
-//            Process.Start(weight_and_biases_file);
         }
 
       

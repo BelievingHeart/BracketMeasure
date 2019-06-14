@@ -41,7 +41,9 @@ namespace MainAPP.UI
                     new Tuple<string, string>("Y1", "Y1Offset"),
                     new Tuple<string, string>("Y2", "Y2Offset"),
                     new Tuple<string, string>("Angle", "AngleOffset"),
-                    new Tuple<string, string>("m", "mX")
+                    new Tuple<string, string>("m", "mX"),
+                    new Tuple<string, string>("CircleX", "CircleXOffset"),
+                    new Tuple<string, string>("CircleY", "CircleYOffset"),
                 }, ref UVGlue._block);
 
             try
