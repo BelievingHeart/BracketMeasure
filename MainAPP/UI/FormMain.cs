@@ -296,7 +296,7 @@ namespace MainAPP.UI
             var standardDataDict = Rectifier.parseCSV_reversed(standardFile, standardKeys, numLines);
             var sampleDataDict = Rectifier.parseCSV_reversed(UVGlue.csvFile, sampleKeys, numLines);
 
-            var diffs = Rectifier.calcDiffs(standardDataDict, sampleDataDict);
+            var diffs = Rectifier.calcDiffs(standardDataDict, sampleDataDict, "Index");
             var correlationFile = Rectifier.serializeDataDict(diffs, AppDomain.CurrentDomain.BaseDirectory + "/correlation");
 
             Process.Start(correlationFile);

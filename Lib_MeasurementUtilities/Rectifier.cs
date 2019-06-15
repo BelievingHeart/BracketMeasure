@@ -80,12 +80,13 @@ namespace Lib_MeasurementUtilities
         }
 
         public static Dictionary<string, List<double>> calcDiffs(Dictionary<string, List<double>> standardDataDict,
-            Dictionary<string, List<double>> sampleDataDict)
+            Dictionary<string, List<double>> sampleDataDict, params string[] keysToSkip)
         {
             Dictionary<string, List<double>> ret = new Dictionary<string, List<double>>();
 
             foreach (var key in standardDataDict.Keys)
             {
+                if(keysToSkip.Contains(key)) continue;
                 ret[key] = standardDataDict[key].Zip(sampleDataDict[key], (a, b) => a - b).ToList();
             }
 
