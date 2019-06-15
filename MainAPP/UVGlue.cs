@@ -164,10 +164,6 @@ namespace MainAPP
         public static void RunOnce()
         {
             _formMain.Invoke((MethodInvoker) (() => { _formMain.btnReset.Enabled = true; }));
-            for (int i = 0; i < _block.Outputs.Count; i++)
-            {
-                _block.Outputs[i].Value = 0.0;
-            }
 
             _block.Run();
             _formMain.Invoke((MethodInvoker) (() =>
@@ -363,9 +359,11 @@ namespace MainAPP
             var lineVals = new List<string>
             {
                 DateTime.Now.ToString("HH:mm:ss"), X1.ToString("f3"), X2.ToString("f3"), Y1.ToString("f3"),
-                Y2.ToString("f3"), angle.ToString("f3"),
+                Y2.ToString("f3"),CircleX.ToString("f3"),CircleY.ToString("f3"), angle.ToString("f3"),
                 runResult, itemIndex.ToString(), " ", X1_pixel.ToString("f3"), X2_pixel.ToString("f3"),
-                Y1_pixel.ToString("f3"), Y2_pixel.ToString("f3")
+                Y1_pixel.ToString("f3"), Y2_pixel.ToString("f3"),
+                CircleX_pixel.ToString("f3"), CircleY_pixel.ToString("f3"),
+                angleUncalib.ToString("f3")
             };
             var line = string.Join(",", lineVals);
 
