@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lib_MeasurementUtilities;
 
@@ -43,6 +37,7 @@ namespace MainAPP.UI
             try
             {
                 UVGlue.SaveVPP();
+                UVGlue.BackupVPP();
                 MessageBox.Show("应用并保存成功");
             }
             catch
@@ -50,5 +45,6 @@ namespace MainAPP.UI
                 MessageBox.Show("保存失败");
             }
         }
+
     }
 }

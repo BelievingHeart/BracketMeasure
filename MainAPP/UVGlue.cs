@@ -36,9 +36,9 @@ namespace MainAPP
         public static CogToolBlock _block;
 
 
-        public static string projectDir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + "/VPP";
+        public static string vppDir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + "/VPP";
 
-        public static string vppFilePath = Path.Combine(projectDir, "Template.vpp");
+        public static string vppFilePath = Path.Combine(vppDir, "Template.vpp");
 
 
         //
@@ -401,6 +401,13 @@ namespace MainAPP
         {
             UVGlue.CloseVPP();
             IOC0640.ioc_board_close();
+        }
+
+        public static void BackupVPP()
+        {
+            var backupPath = Path.Combine(vppDir, "Backup.vpp");
+            if (System.IO.File.Exists(backupPath)) System.IO.File.Delete(backupPath);
+            System.IO.File.Copy(vppFilePath, backupPath);
         }
     }
 }

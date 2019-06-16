@@ -32,6 +32,7 @@ namespace MainAPP
             {
                 WinAPI.ShowWindowAsync(instance.MainWindowHandle, WinAPI.SW_SHOW);
                 WinAPI.SetForegroundWindow(instance.MainWindowHandle);
+                MessageBox.Show("主程序已运行");
             }
             else
             {

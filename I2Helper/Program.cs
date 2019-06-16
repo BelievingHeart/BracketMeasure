@@ -16,7 +16,7 @@ namespace I2Helper
         [STAThread]
         static void Main()
         {
-            string guid = GetGuid();
+            string guid = GetGuidFromTypeOfProgram(typeof(Program));
             using (Mutex mutex = new Mutex(false, "Global\\" + guid))
             {
                 if (!mutex.WaitOne(0, false))
@@ -33,11 +33,12 @@ namespace I2Helper
 
         }
 
-        private static string GetGuid()
+        private static string GetGuidFromTypeOfProgram(Type type)
         {
-            var assembly = typeof(Program).Assembly;
+            var assembly = type.Assembly;
             var attribute = (GuidAttribute)assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
             return attribute.Value;
         }
+
     }
 }
