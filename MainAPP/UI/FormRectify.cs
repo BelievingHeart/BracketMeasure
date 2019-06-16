@@ -29,10 +29,6 @@ namespace MainAPP.UI
 
         private void btnApplyCalibration_Click(object sender, EventArgs e)
         {
-            var userResult = MessageBox.Show("是否将参数应用到CCD软件?", "应用参数", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button1);
-            if (userResult != DialogResult.Yes) return;
-
             if (VerificationBox.Show() != DialogResult.Yes) return;
 
             Rectifier.EditBlockInputParams((ObservableCollection<RectifiedParam>) dataGridView1.DataSource,
@@ -42,8 +38,6 @@ namespace MainAPP.UI
                     new Tuple<string, string>("Y2", "Y2Offset"),
                     new Tuple<string, string>("Angle", "AngleOffset"),
                     new Tuple<string, string>("m", "mX"),
-                    new Tuple<string, string>("CircleX", "CircleXOffset"),
-                    new Tuple<string, string>("CircleY", "CircleYOffset"),
                 }, ref UVGlue._block);
 
             try

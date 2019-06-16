@@ -38,8 +38,8 @@ namespace MainAPP.UI
 
         // fields for rectifier
         private string standardFile = AppDomain.CurrentDomain.BaseDirectory + "/data/OMM_DATA.csv";
-        private List<string> sampleKeys = new List<string>() { "TimeAdded", "X1", "X2", "Y1", "Y2", "CircleX", "CircleY", "Angle", "Result", "Order", "Space", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel", "CircleX_pixel", "CircleY_pixel", "AngleUncalib" };
-        private List<string> standardKeys = new List<string>() {"Index", "X1", "X2", "Y1", "Y2", "CircleX", "CircleY", "Angle" };
+        private List<string> sampleKeys = new List<string>() { "TimeAdded", "X1", "X2", "Y1", "Y2", "Angle", "Result", "Order", "Space", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel", "AngleUncalib" };
+        private List<string> standardKeys = new List<string>() {"Index", "X1", "X2", "Y1", "Y2", "Angle" };
         private int numLines = 8;
         private FormRectify _formRectify = new FormRectify();
 
@@ -90,12 +90,6 @@ namespace MainAPP.UI
             }
         }
 
-        private void EnableControls(bool enabled)
-        {
-            this.menuIOCard.Enabled = enabled;
-            this.stationsToolStripMenuItem.Enabled = enabled;
-            this.btnRun.Enabled = enabled;
-        }
 
 
         public FormMain()
@@ -138,12 +132,6 @@ namespace MainAPP.UI
             };
             _chartFormMarshaller = new ChartFormMarshaller(this, _legends, _sigmas, _numSamples, _chartFormButtons, btnReset, _reversed);
 
-            _formRectify.FormClosing += (o, args) =>
-            {
-                if (args.CloseReason != CloseReason.UserClosing) return;
-                ((FormRectify) o).Hide();
-                args.Cancel = true;
-            };
         }
 
 
@@ -169,49 +157,18 @@ namespace MainAPP.UI
           
         }
 
-
-        private void menuLogin_Click(object sender, EventArgs e)
-        {
-            FormLogin fl = new FormLogin();
-            if (DialogResult.OK == fl.ShowDialog())
-            {
-                EnableControls(true);
-            }
-        }
-        private void menuLogout_Click(object sender, EventArgs e)
-        {
-            EnableControls(false);
-        }
-        private void menuWord_Click(object sender, EventArgs e)
-        {
-            string fileName = Application.StartupPath + @"\Sajet_ATE.doc";
-            if (File.Exists(fileName))
-            {
-                Process word = Process.Start(fileName);
-            }
-        }
-        private void menuAbout_Click(object sender, EventArgs e)
-        {
-            AboutBox1 ab = new AboutBox1();
-            ab.ShowDialog();
-        }
         private void btnClear_Click(object sender, EventArgs e)
         {
             this.listBox1.Items.Clear();
         }
         private void btnRun_Click(object sender, EventArgs e)
         {
-            //UVGlue._block.Run();
-            //this.cogRecordDisplay1.Record = UVGlue._block.CreateLastRunRecord().SubRecords["CogIPOneImageTool1.OutputImage"];
+            
             UVGlue.RunOnce();
         }
         private void 模板设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_formBlock == null || _formBlock.IsDisposed)
-            {
-                _formBlock = new FormBlock();
-            }
-            _formBlock.Hide();
+            if(_formBlock == null) _formBlock = new FormBlock();
             _formBlock.Show(this);
         }
 
@@ -273,7 +230,6 @@ namespace MainAPP.UI
             Dictionary<string, List<double>> distsUnBiased = Rectifier.calDistsUnbiased(sampleDataDict, multiplier,
                 new Tuple<string, string>("X1_pixel", "X1"), new Tuple<string, string>("X2_pixel", "X2")
                 , new Tuple<string, string>("Y1_pixel", "Y1"), new Tuple<string, string>("Y2_pixel", "Y2")
-                , new Tuple<string, string>("CircleX_pixel", "CircleX"), new Tuple<string, string>("CircleY_pixel", "CircleY")
             );
 
             distsUnBiased["Angle"] = sampleDataDict["AngleUncalib"];

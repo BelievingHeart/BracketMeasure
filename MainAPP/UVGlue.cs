@@ -56,21 +56,17 @@ namespace MainAPP
             Y2,
             X1,
             X2,
-            CircleX,
-            CircleY,
             X1_pixel,
             X2_pixel,
             Y1_pixel,
             Y2_pixel,
-            CircleX_pixel,
-            CircleY_pixel,
             angle,
             angleUncalib;
 
         private static string logDir = AppDomain.CurrentDomain.BaseDirectory + "Log";
 
         private static List<string> logTitile = new List<string>
-            {"时间", "X1", "X2", "Y1", "Y2","圆X", "圆Y", "角度", "结果", "序号", " ", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel", "CircleX_pixel", "CircleY_pixel", "AngleUncalib"};
+            {"时间", "X1", "X2", "Y1", "Y2", "角度", "结果", "序号", " ", "X1_pixel", "X2_pixel", "Y1_pixel", "Y2_pixel", "AngleUncalib"};
 
         private static DataLogger dataLogger = new DataLogger(logTitile, logDir);
 
@@ -195,11 +191,7 @@ namespace MainAPP
             X2_pixel = (double) _block.Outputs["X2_pixel"].Value;
             Y1_pixel = (double) _block.Outputs["Y1_pixel"].Value;
             Y2_pixel = (double) _block.Outputs["Y2_pixel"].Value;
-            CircleX = (double) _block.Outputs["CircleX"].Value;
-            CircleY = (double) _block.Outputs["CircleY"].Value;
-            CircleX_pixel = (double) _block.Outputs["CircleX_pixel"].Value;
-            CircleY_pixel = (double) _block.Outputs["CircleY_pixel"].Value;
-            
+
 
 
             lock (_formMain._chartFormMarshaller.mu_currentIndex)
@@ -359,10 +351,9 @@ namespace MainAPP
             var lineVals = new List<string>
             {
                 DateTime.Now.ToString("HH:mm:ss"), X1.ToString("f3"), X2.ToString("f3"), Y1.ToString("f3"),
-                Y2.ToString("f3"),CircleX.ToString("f3"),CircleY.ToString("f3"), angle.ToString("f3"),
+                Y2.ToString("f3"), angle.ToString("f3"),
                 runResult, itemIndex.ToString(), " ", X1_pixel.ToString("f3"), X2_pixel.ToString("f3"),
                 Y1_pixel.ToString("f3"), Y2_pixel.ToString("f3"),
-                CircleX_pixel.ToString("f3"), CircleY_pixel.ToString("f3"),
                 angleUncalib.ToString("f3")
             };
             var line = string.Join(",", lineVals);

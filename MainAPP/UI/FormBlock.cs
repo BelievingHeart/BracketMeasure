@@ -23,19 +23,6 @@ namespace MainAPP.UI
             this.cogToolBlockEditV21.Subject = UVGlue._block;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                UVGlue.SaveVPP();
-                MessageBox.Show("保存成功");
-                Clipboard.Clear();
-            }
-            catch
-            {
-                MessageBox.Show("保存失败");
-            }
-        }
 
         private void FormModel_FormClosing(object sender, FormClosingEventArgs e)
         {
